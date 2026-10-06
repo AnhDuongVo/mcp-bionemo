@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-bionemo"
+version = "0.1.0"
+description = "A Model Context Protocol (MCP) server that exposes NVIDIA BioNeMo biology NIMs (RFdiffusion, ProteinMPNN, Boltz-2) as typed tools, with an offline simulator by default."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Anh Duong Vo" }]
+keywords = ["mcp", "model-context-protocol", "bionemo", "nvidia", "nim", "protein-design", "drug-discovery"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: Apache Software License",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+  "mcp>=2,<3",
+  "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+live = ["requests>=2.31"]
+dev = ["pytest>=8", "ruff==0.16.10"]
+
+[project.scripts]
+mcp-bionemo = "mcp_bionemo.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["E501", "B008", "RUF001", "RUF002", "RUF003", "RUF005"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

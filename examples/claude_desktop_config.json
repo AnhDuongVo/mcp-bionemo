@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "bionemo": {
+      "command": "mcp-bionemo",
+      "env": {
+        "BIONEMO_BACKEND": "simulated"
+      }
+    }
+  }
+}
