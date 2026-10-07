@@ -8,9 +8,8 @@ NeMo Agent Toolkit can consume any MCP server as a tool source. Point its MCP cl
 - `fold_complex` (Boltz-2, optional affinity)
 - `design_binder` (RFdiffusion then ProteinMPNN, one call)
 
-This is the point of the project: BioNeMo ships as agent skills and as raw NIM endpoints, so an
-MCP-native client would otherwise have no schema to discover these models. Running this server gives
-every MCP client, NAT included, a typed interface to them.
+BioNeMo's models are otherwise available only as agent skills and raw NIM endpoints, so an MCP client has
+no schema to discover them. Running this server gives every MCP client, NAT included, a typed interface.
 
 To route the tools to the real NIMs instead of the simulator, set in the server environment:
 
