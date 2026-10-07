@@ -2,6 +2,12 @@
 
 **A Model Context Protocol (MCP) server for NVIDIA BioNeMo biology NIMs.** It exposes RFdiffusion, ProteinMPNN and Boltz-2 as typed MCP tools, so any MCP client (Claude Desktop, Cursor, an IDE agent, or NeMo Agent Toolkit's own MCP client) can discover and call them like any other tool. It runs against a deterministic **simulator by default**, so you can install and explore it with no GPU, no key and no network.
 
+## Demo
+
+![mcp-bionemo demo](docs/demo.gif)
+
+The tool tests run against the simulator, then the client configuration that registers the server. The video is on [anhduongvo.github.io](https://anhduongvo.github.io/projects/agentic-tooling/).
+
 ## Background
 
 BioNeMo's biology models are available as NeMo Agent Toolkit agent skills and as HTTP NIM endpoints, but not as an MCP server, so an MCP client has no schema to discover them and cannot call them as tools. `mcp-bionemo` wraps the NIM endpoints in MCP tools with typed input schemas. The same tools route to the real NIMs with one environment variable.
