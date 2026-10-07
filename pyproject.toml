@@ -9,7 +9,7 @@ description = "A Model Context Protocol (MCP) server that exposes NVIDIA BioNeMo
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 license = { text = "Apache-2.0" }
-authors = [{ name = "Anh Duong Vo" }]
+authors = [{ name = "Maria (Anh Duong Vo)" }]
 keywords = ["mcp", "model-context-protocol", "bionemo", "nvidia", "nim", "protein-design", "drug-discovery"]
 classifiers = [
   "Programming Language :: Python :: 3",
