@@ -15,3 +15,5 @@ def test_stdio_client_walkthrough():
     )
     assert completed.returncode == 0, completed.stderr
     assert "Simulator call succeeded" in completed.stdout
+    assert "Calling design_backbone:" in completed.stdout
+    assert "Returned output_pdb:" in completed.stdout

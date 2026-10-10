@@ -4,11 +4,11 @@
 
 Demonstrates a lightweight typed MCP interface for selected BioNeMo endpoints and a deterministic integration simulator.
 
-## Watch the demo
+## CLI example
 
-![Demo](docs/demo.gif)
+![CLI input and output](docs/mcp-bionemo.png)
 
-[Portfolio videos](https://anhduongvo.github.io/projects/agentic-tooling/). Clinical recordings use the separate simplified interactive demo.
+[Portfolio examples](https://anhduongvo.github.io/projects/agentic-tooling/). Clinical recordings use the separate simplified interactive demo.
 
 ## Try it offline
 
@@ -48,9 +48,7 @@ See [validation details](docs/validation.md). The architecture and detailed work
 
 ## Demo
 
-![mcp-bionemo demo](docs/demo.gif)
-
-The tool tests run against the simulator, then the client configuration that registers the server. The video is on [anhduongvo.github.io](https://anhduongvo.github.io/projects/agentic-tooling/).
+The stdio MCP client discovers the available tools and invokes design_backbone against the simulator. The image shows the actual command and returned output. The command/output examples are on [anhduongvo.github.io](https://anhduongvo.github.io/projects/agentic-tooling/).
 
 ## Background
 

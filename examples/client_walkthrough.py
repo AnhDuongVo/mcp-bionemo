@@ -25,7 +25,18 @@ async def main():
             payload = json.loads(result.content[0].text)
         assert payload["backend"] == "simulated"
         print("Discovered:", ", ".join(sorted(names)))
-        print("Simulator call succeeded")
+        arguments = {"input_pdb": "HEADER SYNTHETIC SIMULATOR INPUT\nEND\n", "contigs": "A1-50/0 50-60"}
+        print("Calling design_backbone:", json.dumps(arguments))
+        result = await session.call_tool("design_backbone", arguments)
+        assert not result.is_error
+        backbone = result.structured_content
+        if backbone is None:
+            backbone = json.loads(result.content[0].text)
+        pdb = backbone["output_pdb"]
+        assert isinstance(pdb, str) and "ATOM" in pdb
+        print("Returned output_pdb:", len(pdb), "characters")
+        print("First generated atom:", next(line for line in pdb.splitlines() if line.startswith("ATOM")))
+        print("Simulator call succeeded; actual stdio MCP transport, no live NIM inference")
 
 
 if __name__ == "__main__":
