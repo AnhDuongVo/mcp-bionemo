@@ -3,8 +3,7 @@
 Background
 ----------
 BioNeMo's biology models are available as NeMo Agent Toolkit agent skills and as HTTP NIM endpoints, but
-not as an MCP server, so an MCP client (Claude Desktop, Cursor, an IDE agent, NeMo Agent Toolkit's own MCP
-client) cannot discover or call RFdiffusion, ProteinMPNN or Boltz-2 as tools. This server wraps the NIM
+this repository adds a lightweight typed MCP interface and an offline simulator. This server wraps the NIM
 endpoints in typed MCP tools with a schema the client can read.
 
 It runs against a deterministic simulator by default, so it is safe to install and explore with no key.
@@ -51,7 +50,9 @@ def design_backbone(input_pdb: str, contigs: str, hotspot_res: list[str] | None 
 
 
 @mcp.tool()
-def design_sequences(input_pdb: str, num_sequences: int = 8) -> dict[str, Any]:
+def design_sequences(
+    input_pdb: str, num_sequences: int = 8, input_pdb_chains: list[str] | None = None
+) -> dict[str, Any]:
     """Design amino-acid sequences that fold to a given backbone with ProteinMPNN.
 
     Args:
@@ -60,7 +61,7 @@ def design_sequences(input_pdb: str, num_sequences: int = 8) -> dict[str, Any]:
 
     Returns a dict with `mfasta` (FASTA of designs) and `scores` (lower is better).
     """
-    return _bio().proteinmpnn(input_pdb=input_pdb, num_seq_per_target=num_sequences)
+    return _bio().proteinmpnn(input_pdb=input_pdb, num_seq_per_target=num_sequences, input_pdb_chains=input_pdb_chains)
 
 
 @mcp.tool()
@@ -79,10 +80,14 @@ def fold_complex(
 
     Returns a dict with `structures`, `confidence_scores`, and (optionally) `affinities`.
     """
-    polymers = [{"id": chr(ord("A") + i), "molecule_type": "protein", "sequence": s} for i, s in enumerate(protein_sequences)]
+    polymers = [
+        {"id": chr(ord("A") + i), "molecule_type": "protein", "sequence": s} for i, s in enumerate(protein_sequences)
+    ]
     ligands = None
     if ligand_smiles:
-        ligands = [{"id": f"L{i}", "smiles": smi, "predict_affinity": predict_affinity} for i, smi in enumerate(ligand_smiles)]
+        ligands = [
+            {"id": f"L{i}", "smiles": smi, "predict_affinity": predict_affinity} for i, smi in enumerate(ligand_smiles)
+        ]
     return _bio().boltz2(polymers=polymers, ligands=ligands)
 
 
@@ -100,7 +105,13 @@ def design_binder(
     """
     bio = _bio()
     bb = bio.rfdiffusion(input_pdb=target_pdb, contigs=contigs, hotspot_res=hotspot_res)
-    seqs = bio.proteinmpnn(input_pdb=bb["output_pdb"], num_seq_per_target=num_sequences)
+    target_chains = {line[21:22] for line in target_pdb.splitlines() if line.startswith("ATOM")}
+    generated = {line[21:22] for line in bb["output_pdb"].splitlines() if line.startswith("ATOM")} - target_chains
+    if len(generated) != 1:
+        raise ValueError("Cannot identify one generated binder chain")
+    seqs = bio.proteinmpnn(
+        input_pdb=bb["output_pdb"], num_seq_per_target=num_sequences, input_pdb_chains=sorted(generated)
+    )
     return {"backbone_pdb": bb["output_pdb"], "designs": seqs.get("mfasta", ""), "scores": seqs.get("scores", [])}
 
 

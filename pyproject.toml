@@ -24,7 +24,7 @@ dependencies = [
 
 [project.optional-dependencies]
 live = ["requests>=2.31"]
-dev = ["pytest>=8", "ruff==0.16.10"]
+dev = ["pytest>=8", "ruff==0.16.10", "requests>=2.31"]
 
 [project.scripts]
 mcp-bionemo = "mcp_bionemo.server:main"

@@ -25,4 +25,6 @@ def backend() -> BioNeMo:
 
 
 def backend_name() -> str:
-    return "live" if os.getenv("BIONEMO_BACKEND", "simulated").strip().lower() in {"live", "nim", "real"} else "simulated"
+    return (
+        "live" if os.getenv("BIONEMO_BACKEND", "simulated").strip().lower() in {"live", "nim", "real"} else "simulated"
+    )
